@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import CardContainer from "../components/CardContainer";
 import MovieCard from "../components/MovieCard";
+import Carousel from "../components/Carousel";
 
 export default function Home() {
 
@@ -36,9 +37,11 @@ export default function Home() {
     useEffect(() => {
         fetchMovies();
     }, [])
+    
 
     return (
         <>
+            <Carousel filmesPopulares={filmesPopulares}/>
             <CardContainer titulo="Populares">
                 {
                     filmesPopulares
