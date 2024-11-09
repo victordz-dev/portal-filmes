@@ -1,15 +1,18 @@
-export default function ElencoCard({ id, name, profile_path }) {
+export default function ElencoCard({ name, profile_path }) {
+
+    const noImage = "../src/assets/no_img.jpg"
+
       return (
             <>
                 <div className='flex flex-col'>
                     <div className='h-[35vh] w-[35vw]'>
-                        <img src={`https://image.tmdb.org/t/p/w1280${profile_path}`} alt={title} className='h-full'/>
+                        {profile_path===null ? <img src={noImage} alt={name} className='w-[210px] h-full'/> :
+                        <img src={`https://image.tmdb.org/t/p/w1280${profile_path}`} alt={name} className='h-full'/>}
                     </div>
                     <div>
-                    <h1 className='font-black mb-2'>{title}{name}</h1>
+                    <h1 className='font-black mb-2'>{name}</h1>
                     </div>
                 </div>
-            <Button onClick={()=>alert(`O filme ${title} foi adicionado com sucesso!`)}>Adicionar</Button>
         </>
       )
 }

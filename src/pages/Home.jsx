@@ -45,6 +45,7 @@ export default function Home() {
     return (
         <>
             <Carousel banner={filmesPopulares}/>
+            
             <CardContainer  title="Mais populares">
                 <Swiper
                 slidesPerView={6}

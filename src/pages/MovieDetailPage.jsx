@@ -1,7 +1,11 @@
-import { act, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Rate from '../components/Rate';
 import CardContainer from '../components/CardContainer';
+import { Swiper, SwiperSlide } from "swiper/react"
+import 'swiper/css'
+import 'swiper/css/navigation'
+import ElencoCard from '../components/ElencoCard';
 
 export default function MovieDetailPage() {
 
@@ -14,8 +18,8 @@ export default function MovieDetailPage() {
 
             const [movieResponse, elencoResponse] = await Promise.all(
                 [
-                    fetch(`https://api.themoviedb.org/3/movie/912649?api_key=7c572a9f5b3ba776080330d23bb76e1e&language=pt-br`),
-                    fetch(`https://api.themoviedb.org/3/movie/912649/credits?api_key=7c572a9f5b3ba776080330d23bb76e1e&language=pt-br`)
+                    fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=7c572a9f5b3ba776080330d23bb76e1e&language=pt-br`),
+                    fetch(`https://api.themoviedb.org/3/movie/${id}/credits?api_key=7c572a9f5b3ba776080330d23bb76e1e&language=pt-br`)
                 ]
             )
 
@@ -37,20 +41,10 @@ export default function MovieDetailPage() {
     const notaDecimal = nota.toFixed(1)
     const release = movie.release_date
 
-
-    const isActor = elenco.map(actor => {
-        if (actor.known_for_department === 'Acting') {
-            return actor
-        }
-    })
-
-    
-
-
     function formatarData(filmRelease) {
         const data = new Date(filmRelease);
         const dia = String(data.getDate()).padStart(2, '0');
-        const mes = String(data.getMonth() + 1).padStart(2, '0'); // Mês começa em 0
+        const mes = String(data.getMonth() + 1).padStart(2, '0'); 
         const ano = data.getFullYear();
         return `${dia}/${mes}/${ano}`;
       }
@@ -73,9 +67,18 @@ export default function MovieDetailPage() {
                     <p>Lançamento: {formatarData(release)}</p>
                     <p> {movie.overview}</p>
                 </div>
-                <div className='p-10'>
-                    <h2 className='text-2xl font-bold'>Elenco</h2>
-                    <CardContainer title="Elenco" movieData={isActor}/>
+                <div className='pl-12'>
+                    <CardContainer title="Elenco">
+                        <Swiper
+                            slidesPerView={6}
+                            >
+                                {elenco.map(actorData =>(
+                                    <SwiperSlide>
+                                        <ElencoCard name={actorData.name} profile_path={actorData.profile_path}/>
+                                    </SwiperSlide>
+                                ))}
+                        </Swiper>
+                    </CardContainer>
                 </div>
             </div>
     )
