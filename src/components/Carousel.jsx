@@ -22,7 +22,9 @@ return (
                   {banner.slice(0,5)
                         .map(filme => (
                               <SwiperSlide key={filme.id}>
-                                          <div className="absolute inset-0 bg-gradient-to-t from-white to-transparent z-10 cursor-pointer"></div>
+                                    <Link to={`/filme/${filme.id}`}>
+                                          <div className="absolute inset-0 bg-gradient-to-t from-white to-transparent z-[2]">
+                                          </div>
                                                 <div className="absolute inset-0 flex items-end justify-center p-20 z-20">
                                           <div className="text-lightAccent space-y-4 max-w-md flex flex-col items-center">
                                                 <h1 className="text-2xl font-bold w-fit">{filme.title}</h1>
@@ -30,6 +32,7 @@ return (
                                           </div>
                                                 </div>
                                                 <img src={`https://image.tmdb.org/t/p/w1280${filme.backdrop_path}`} className='w-full h-full object-cover' />
+                                    </Link>
                               </SwiperSlide>
                         ))
                   }

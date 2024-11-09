@@ -12,22 +12,29 @@ export default function MovieDetailPage() {
     const { id } = useParams()
     const [movie, setMovie] = useState([])
     const [elenco, setElenco] = useState([])
+    const [video, setVideo] = useState([])
 
     const fetchMovieData = async () => {
         try {
 
-            const [movieResponse, elencoResponse] = await Promise.all(
+            const [movieResponse, elencoResponse, videoResponse] = await Promise.all(
                 [
                     fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=7c572a9f5b3ba776080330d23bb76e1e&language=pt-br`),
-                    fetch(`https://api.themoviedb.org/3/movie/${id}/credits?api_key=7c572a9f5b3ba776080330d23bb76e1e&language=pt-br`)
+                    fetch(`https://api.themoviedb.org/3/movie/${id}/credits?api_key=7c572a9f5b3ba776080330d23bb76e1e&language=pt-br`),
+                    fetch(`https://api.themoviedb.org/3/movie/${id}/videos?api_key=fef4f517897094a9f2326af354ab5b6a`)
                 ]
             )
 
             const movieData = await movieResponse.json()
             const elencoData = await elencoResponse.json()
+            const videoData = await videoResponse.json()
 
             setMovie(movieData)
             setElenco(elencoData.cast)
+            setVideo(() => {
+                const trailer = videoData.results.find(video => video.type === 'Trailer' && video.site === 'YouTube');
+                return trailer ? trailer.key : null;
+            });
 
         }
         catch { }
@@ -79,6 +86,25 @@ export default function MovieDetailPage() {
                                 ))}
                         </Swiper>
                     </CardContainer>
+
+                    <div className='flex w-full h-fit justify-center mt-20 pb-32'>
+                        <div class="w-10/12 h-full">
+                            <h2 class="text-lightAccent text-2xl font-semibold mb-4 text-center">Trailer do Filme</h2>
+                            <div class="relative">
+                                <iframe
+                                    id="trailerVideo"
+                                    class="w-full h-[600px] rounded-md"
+                                    src={ video === null ? 'https://www.youtube.com/embed/8Qn_spdM5Zg' :
+                                        `https://www.youtube.com/embed/${video}`
+                                    }
+                                    title="YouTube video player"
+                                    frameborder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
     )
