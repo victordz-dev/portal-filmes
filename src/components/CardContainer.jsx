@@ -1,10 +1,8 @@
-export default function CardContainer({ titulo, children }) {
-    return (
-        <div>
-            <h1>{titulo}</h1>
-            <div className="flex flex-wrap">
-                {children}
-            </div>
+export default function CardContainer({title, children}){
+    return(
+        <div className="mt-20 pl-5 w-screen">
+            <h1 className="text-4xl font-titles mb-5">{title}</h1>
+            {children}
         </div>
     )
 }
